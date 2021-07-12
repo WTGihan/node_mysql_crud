@@ -42,8 +42,24 @@ Employee.getEmployeeByID = (id, result) => {
 // get employee by email from DB
 Employee.getEmployeeByEmail = (email, result) => {
   dbConnection.query(
-    "SELECT * FROM employess WHERE email=?",
+    "SELECT * FROM employess WHERE email=? AND is_deleted=0",
     email,
+    (err, res) => {
+      if (err) {
+        console.log("Error while fetching employee by id ", err);
+        result(null, err);
+      } else {
+        result(null, res);
+      }
+    }
+  );
+};
+
+// check employee by email and id aloready exist from DB
+Employee.getEmployeeByEmailAndID = (email, id, result) => {
+  dbConnection.query(
+    "SELECT * FROM employess WHERE email=? AND id!=? AND is_deleted=0",
+    [email, id],
     (err, res) => {
       if (err) {
         console.log("Error while fetching employee by id ", err);
