@@ -70,25 +70,27 @@ exports.updateEmployee = (req, res) => {
             .status(404)
             .send("Email already exists another account!!!");
         } else {
-          return;
+          updateEmploye();
         }
       }
     }
   );
 
-  const employeeReqData = new EmployeeModel(req.body);
+  function updateEmploye() {
+    const employeeReqData = new EmployeeModel(req.body);
 
-  EmployeeModel.updateEmployee(
-    req.params.id,
-    employeeReqData,
-    (err, employee) => {
-      if (err) {
-        if (err) return res.status(404).send("Something went Wrong!!!");
-      } else {
-        return res.status(200).send("Successfully Updated");
+    EmployeeModel.updateEmployee(
+      req.params.id,
+      employeeReqData,
+      (err, employee) => {
+        if (err) {
+          if (err) return res.status(404).send("Something went Wrong!!!");
+        } else {
+          return res.status(200).send("Successfully Updated");
+        }
       }
-    }
-  );
+    );
+  }
 };
 
 // delete employee
