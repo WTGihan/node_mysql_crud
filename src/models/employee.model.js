@@ -39,6 +39,22 @@ Employee.getEmployeeByID = (id, result) => {
   });
 };
 
+// get employee by email from DB
+Employee.getEmployeeByEmail = (email, result) => {
+  dbConnection.query(
+    "SELECT * FROM employess WHERE email=?",
+    email,
+    (err, res) => {
+      if (err) {
+        console.log("Error while fetching employee by id ", err);
+        result(null, err);
+      } else {
+        result(null, res);
+      }
+    }
+  );
+};
+
 // create new employee
 Employee.createEmployee = (employeeReqData, result) => {
   dbConnection.query(

@@ -29,9 +29,21 @@ exports.createNewEmployee = (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(404).send(error.details[0].message);
 
+  const email = req.body.email;
   //   check email already exist
+  EmployeeModel.getEmployeeByEmail(email, (err, employee) => {
+    if (err) return res.send(err);
+    else {
+      if (employee.length !== 0) {
+        return res.status(404).send("Email already exists!!!");
+      }
+      return;
+    }
+  });
+  // console.log("result", result);
 
   const employeeReqData = new EmployeeModel(req.body);
+
   EmployeeModel.createEmployee(employeeReqData, (err, employee) => {
     if (err) {
       res.send(err);
@@ -40,15 +52,6 @@ exports.createNewEmployee = (req, res) => {
       res.json({ status: true, message: "Successfully Added" });
     }
   });
-
-  // check null not working
-  //   if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
-  //     res.send(400).send({ success: false, message: "Please fill all fields" });
-  //   }
-  //   else {
-  //     console.log("Valid Data");
-
-  //   }
 };
 
 // update employee
