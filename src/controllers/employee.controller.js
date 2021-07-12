@@ -1,4 +1,5 @@
 const EmployeeModel = require("../models/employee.model");
+const validate = require("../validation/employee");
 
 //  get all employee list
 exports.getEmployeeList = (req, res) => {
@@ -22,28 +23,39 @@ exports.getEmployeeByID = (req, res) => {
 // create new employee
 // validation should be there
 exports.createNewEmployee = (req, res) => {
-  //   console.log("Create New Employee and request data", req.body);
+  // validation
+
+  //   check null
+  const { error } = validate(req.body);
+  if (error) return res.status(404).send(error.details[0].message);
+
+  //   check email already exist
+
   const employeeReqData = new EmployeeModel(req.body);
+  EmployeeModel.createEmployee(employeeReqData, (err, employee) => {
+    if (err) {
+      res.send(err);
+      res.json({ status: false, message: "Something went wrong" });
+    } else {
+      res.json({ status: true, message: "Successfully Added" });
+    }
+  });
+
   // check null not working
-  if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
-    res.send(400).send({ success: false, message: "Please fill all fields" });
-  } else {
-    console.log("Valid Data");
-    EmployeeModel.createEmployee(employeeReqData, (err, employee) => {
-      if (err) {
-        res.send(err);
-        res.json({ status: false, message: "Something went wrong" });
-      } else {
-        res.json({ status: true, message: "Successfully Added" });
-      }
-    });
-  }
+  //   if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
+  //     res.send(400).send({ success: false, message: "Please fill all fields" });
+  //   }
+  //   else {
+  //     console.log("Valid Data");
+
+  //   }
 };
 
 // update employee
 exports.updateEmployee = (req, res) => {
   const employeeReqData = new EmployeeModel(req.body);
   // check null not working
+
   if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
     res.send(400).send({ success: false, message: "Please fill all fields" });
   } else {
