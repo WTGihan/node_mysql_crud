@@ -1,5 +1,5 @@
 const EmployeeModel = require("../models/employee.model");
-const validate = require("../validation/employee");
+const validate = require("../validation/employee.validation");
 
 //  get all employee list
 exports.getEmployeeList = (req, res) => {
