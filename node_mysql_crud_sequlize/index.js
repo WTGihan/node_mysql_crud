@@ -24,6 +24,7 @@ app.get("/", (req, res) => {
 });
 
 require("./routes/tutorial.routes")(app);
+require("./routes/comment.routes")(app);
 
 // set port listent for requests
 const PORT = process.env.PORT || 8080;

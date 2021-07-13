@@ -9,6 +9,10 @@ module.exports = (app) => {
   //   Retrieve all Tutorials
   router.get("/", tutorials.findAll);
 
+  //   Customize routes should be route first
+  //   retrieve all published tutorials
+  router.get("/published", tutorials.findAllPublished);
+
   //   Retrieve a single Tutorial with id
   router.get("/:id", tutorials.findOne);
 
@@ -20,9 +24,6 @@ module.exports = (app) => {
 
   //   delete all tutorials
   router.delete("/", tutorials.deleteAll);
-
-  //   retrieve all published tutorials
-  router.get("/published", tutorials.findAllPublished);
 
   app.use("/api/tutorials", router);
 };
